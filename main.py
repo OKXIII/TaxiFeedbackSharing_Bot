@@ -11,7 +11,27 @@ import re
 import time
 import traceback
 
+_rus_chars = "УКЕНХВАРОСМТ"
+_eng_chars = "YKEHXBAPOCMT"
+_trans_table = dict(zip(_rus_chars, _eng_chars))
+
 bot = telebot.TeleBot(config.token)
+
+#конвертация номеров в единый формат
+def convert_licenseplate(lp):
+    return u''.join([_trans_table.get(c,c) for c in lp])
+    pass
+
+
+
+#проверка номера на правильность
+
+#получение информации из базы по номеру
+
+#запись данных в БД
+
+
+
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
@@ -20,8 +40,10 @@ def handle_start(message):
     pass
 
 
-#конвертация номеров в единый формат
-
+@bot.message_handler(content_types=["text"])
+def handle_text(message):
+    bot.send_message(message.chat.id, convert_licenseplate(message.text.upper().lower()))
+    pass
 
 
 def telegram_polling():
