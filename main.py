@@ -4,7 +4,7 @@
 import config
 import telebot
 from telebot import types
-from database import DB
+#from database import DB
 import random
 import re
 #import json
