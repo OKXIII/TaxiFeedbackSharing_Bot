@@ -19,8 +19,7 @@ bot = telebot.TeleBot(config.token)
 
 #конвертация номеров в единый формат
 def convert_licenseplate(lp):
-    return u''.join([_trans_table.get(c,c) for c in lp])
-    pass
+    return u''.join([_trans_table.get(c,c) for c in lp.upper()])
 
 
 
