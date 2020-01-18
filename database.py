@@ -38,7 +38,7 @@ class DB:
 
     def get_count_licenseplate(self):
         with self.connection:
-            self.cursor.execute("SELECT COUNT(ID) FROM [LicensePlate]")
+            self.cursor.execute("SELECT COUNT(ID) FROM LicensePlate")
             return self.cursor.fetchall()[0][0]
 
     def get_count_comment(self):
