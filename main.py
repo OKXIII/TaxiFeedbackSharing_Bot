@@ -4,7 +4,7 @@
 import config
 import telebot
 from telebot import types
-#from database import DB
+from database import DB
 import random
 import re
 #import json
@@ -24,9 +24,9 @@ def convert_licenseplate(lp):
     trans=u''.join([_trans_table.get(c,c) for c in lp.upper()])
     res=''
     for i in trans:
-        if i in _permitted_chars
+        if i in _permitted_chars:
             res+=i
-        else
+        else:
             res+='O'
     return res
 
@@ -51,6 +51,39 @@ def handle_text(message):
     bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
     pass
 
+
+
+# Статистика использования бота
+@bot.message_handler(commands=['statistics'])
+def handle_statistics(message):
+    # if message.chat.id == config.owner_chat_id:
+    #     db_worker = DB(config.database_name)
+    #     uniusers = len(db_worker.stat_uniuser())
+    #     count_elements = db_worker.stat_count_elements()
+    #     count_purchases = db_worker.stat_count_purchases()
+    #     count_elementinhistory = db_worker.stat_count_elementinhistory()
+    #     count_active_users=db_worker.stat_count_active_users()
+    #     per_active_users=count_active_users/uniusers*100
+    #     text = "Уникальных пользователей - {0}\n" \
+    #             "Добавлено позиций - {1}\n" \
+    #             "Позиций в списках - {2}\n" \
+    #             "Покупок - {3}\n" \
+    #             "Количество строк в БД - {4}\n" \
+    #             "Количество активных пользователей - {5}\n" \
+    #             "Процент активных пользователей - {6:.2f} " \
+    #         .format(uniusers, count_elementinhistory, count_elements, count_purchases,db_worker.stat_count_rows_in_all_tables(),count_active_users, per_active_users)
+    #     bot.send_message(message.chat.id, text)
+    #     list_freq = db_worker.get_freq(0)
+    #     if list_freq != None:
+    #         list = "Часто покупаемые товары:\n"
+    #         i = 1
+    #         for item in list_freq:
+    #             list = list + "{0}. {1}\n".format(i, item[0])
+    #             i = i + 1
+    #         bot.send_message(message.chat.id, list)
+    #     db_worker.close()
+    #     botan.track(config.botan_key, message.chat.id, message, 'statistics')
+    pass
 
 def telegram_polling():
     try:
