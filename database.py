@@ -55,3 +55,7 @@ class DB:
         with self.connection:
             self.cursor.execute("SELECT COUNT(user_id) FROM comment")
             return self.cursor.fetchall()[0][0]
+
+    def close(self):
+        """ Закрываем текущее соединение с БД """
+        self.connection.close()
