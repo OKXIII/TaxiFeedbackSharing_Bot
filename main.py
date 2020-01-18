@@ -21,6 +21,7 @@ bot = telebot.TeleBot(config.token)
 
 #конвертация номеров в единый формат
 def convert_licenseplate(lp):
+    lp=lp.strip()
     trans=u''.join([_trans_table.get(c,c) for c in lp.upper()])
     res=''
     for i in trans:
@@ -31,6 +32,10 @@ def convert_licenseplate(lp):
     return res
 
 #проверка номера на правильность
+def check_licenseplate(lp):
+    result=True
+    if len(lp)>10 or len(lp)<9: result=False
+    return result
 
 #получение информации из базы по номеру
 
