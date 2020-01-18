@@ -43,12 +43,12 @@ class DB:
 
     def get_count_comment(self):
         with self.connection:
-            self.cursor.execute("SELECT COUNT(ID) FROM [Comment]")
+            self.cursor.execute("SELECT COUNT(ID) FROM [comment]")
             return self.cursor.fetchall()[0][0]
 
     def get_count_photo(self):
         with self.connection:
-            self.cursor.execute("SELECT COUNT(ID) FROM [Photo]")
+            self.cursor.execute("SELECT COUNT(ID) FROM [photo]")
             return self.cursor.fetchall()[0][0]
 
     def get_count_activeuser(self):
