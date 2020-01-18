@@ -42,7 +42,7 @@ def handle_start(message):
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
-    bot.send_message(message.chat.id, convert_licenseplate(message.text.upper().lower()))
+    bot.send_message(message.chat.id, convert_licenseplate(message.text.upper()).lower())
     pass
 
 
