@@ -22,3 +22,19 @@ def handle_start(message):
 
 #конвертация номеров в единый формат
 
+
+
+def telegram_polling():
+    try:
+        bot.polling(none_stop=True, timeout=123) #constantly get messages from Telegram
+    except:
+        traceback_error_string=traceback.format_exc()
+        #with open("Error.Log", "a") as myfile:
+        #    myfile.write("\r\n\r\n" + time.strftime("%c")+"\r\n<<error polling="">>\r\n"+ traceback_error_string + "\r\n<<error polling="">>")
+        bot.stop_polling()
+        time.sleep(10)
+        #warning_to_owner("time: {0} \n error:\n {1} ".format(time.strftime("%c"),traceback_error_string) )
+        telegram_polling()
+
+if __name__ == '__main__':
+    telegram_polling()
