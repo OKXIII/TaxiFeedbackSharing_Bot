@@ -10,7 +10,7 @@ import datetime
 parse.uses_netloc.append("postgres")
 try:
 #    url = parse.urlparse(os.environ["DATABASE_URL"])
-   url = parse.urlparse(os.environ["DATABASE"])
+   url = parse.urlparse(os.environ["DATABASE_URL"])
 except:
     print("*** DATABASE_URL not found", flush=True)
 

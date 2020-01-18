@@ -50,14 +50,6 @@ def handle_start(message):
     # Запись в лог
     pass
 
-
-@bot.message_handler(content_types=["text"])
-def handle_text(message):
-    bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
-    pass
-
-
-
 # Статистика использования бота
 @bot.message_handler(commands=['statistics'])
 def handle_statistics(message):
@@ -75,6 +67,16 @@ def handle_statistics(message):
         bot.send_message(message.chat.id, text)
         db_worker.close()
     pass
+
+
+@bot.message_handler(content_types=["text"])
+def handle_text(message):
+    bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
+    pass
+
+
+
+
 
 def telegram_polling():
     try:
