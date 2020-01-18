@@ -24,8 +24,11 @@ def convert_licenseplate(lp):
     trans=u''.join([_trans_table.get(c,c) for c in lp.upper()])
     res=''
     for i in trans:
-        if i in _permitted_chars: res+=i
-    return res  
+        if i in _permitted_chars
+            res+=i
+        else
+            res+='O'
+    return res
 
 #проверка номера на правильность
 
