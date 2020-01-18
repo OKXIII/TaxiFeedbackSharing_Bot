@@ -54,7 +54,7 @@ def handle_start(message):
 @bot.message_handler(commands=['statistics'])
 def handle_statistics(message):
     if message.chat.id == config.owner_chat_id:
-        db_worker = DB(config.database_name)
+        db_worker = DB()
         count_licenseplates=db_worker.get_count_licenseplate()
         count_comments=db_worker.get_count_comment()
         count_photos=db_worker.get_count_photo()

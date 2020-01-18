@@ -16,7 +16,7 @@ except:
 
 
 class DB:
-    def __init__(self, database):
+    def __init__(self):
         # self.connection = sqlite3.connect(database)
         # self.cursor = self.connection.cursor()
         if config.mode == "test":
