@@ -11,17 +11,22 @@ import re
 import time
 import traceback
 
+#_rus_chars = "…÷” ≈Ќ√Ўў«’Џ‘џ¬јѕ–ќЋƒ∆Ёя„—ћ»“№Ѕё"
 _rus_chars = "” ≈Ќ’¬ј–ќ—ћ“"
 _eng_chars = "YKEHXBAPOCMT"
+_permitted_chars="QWERTYUIOPASDFGHJKLZXCVBNM1234567890"
 _trans_table = dict(zip(_rus_chars, _eng_chars))
 
 bot = telebot.TeleBot(config.token)
 
 #конвертаци€ номеров в единый формат
 def convert_licenseplate(lp):
-    return u''.join([_trans_table.get(c,c) for c in lp.upper()])
-
-
+    trans=u''.join([_trans_table.get(c,c) for c in lp.upper()])
+    res=''
+    for i in trans:
+        if i not in _permitted_chars: i=''
+        res+=i
+    return res  
 
 #проверка номера на правильность
 
