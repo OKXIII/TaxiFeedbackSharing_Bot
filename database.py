@@ -35,7 +35,14 @@ class DB:
                 port=url.port)
         self.cursor = self.connection.cursor()
 
+#Получение информации из БД
 
+
+#Добавление записи в БД
+
+
+
+#Получение статистики
     def get_count_licenseplate(self):
         with self.connection:
             self.cursor.execute("SELECT COUNT(id) FROM licenseplate")

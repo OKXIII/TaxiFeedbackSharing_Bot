@@ -32,7 +32,7 @@ def check_licenseplate_len(lp):
     return result
 
 # проверка номера на символы
-def check_licenseplate_len(lp):
+def check_licenseplate_chars(lp):
     for i in lp:
         if i not in _permitted_chars:
             result=False
@@ -73,10 +73,14 @@ def handle_statistics(message):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     m=convert_licenseplate(message.text).upper()
-    if check_licenseplate(m):
-        bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
-    else:
-        bot.send_message(message.chat.id, "В номере указаны неверные символы")
+    if not check_licenseplate_len(m):
+        bot.send_message(message.chat.id, "Недопустимая длина номера автомобиля. Пожалуйста укажите правильный номер.")
+        return
+    if not check_licenseplate_chars(m):
+        bot.send_message(message.chat.id, "В номере указаны неверные символы. Пожалуйста укажите правильный номер.")
+        return
+    bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
+
     pass
 
 
