@@ -33,6 +33,7 @@ def check_licenseplate_len(lp):
 
 # проверка номера на символы
 def check_licenseplate_chars(lp):
+    result=True
     for i in lp:
         if i not in _permitted_chars:
             result=False
