@@ -76,6 +76,15 @@ def handle_statistics(message):
     pass
 
 
+#Формирование клавиатуры
+def create_keyboard(type="common"):
+    keyboard= types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+    button_yes = types.KeyboardButton(text="Да")
+    button_no = types.KeyboardButton(text="Нет")
+    keyboard.add(button_yes, button_no)
+    return keyboard
+
+
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     m=convert_licenseplate(message.text).upper()
@@ -87,9 +96,10 @@ def handle_text(message):
         return
     r=get_info_lp(m)
     if len(r)<1:
-        bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?")
+        bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?",reply_markup=create_keyboard())
     else:
         bot.send_message(message.chat.id, r)
+        bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
 
     pass
 
