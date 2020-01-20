@@ -39,7 +39,7 @@ class DB:
     def get_info_lp(self, src):
         with self.connection:
             self.cursor.execute("SELECT * FROM licenseplate WHERE licenseplate='{}'".format(src))
-        return self.cursor.fetchall()[0][0]
+        return self.cursor.fetchall()[0]
 
     #Добавление записи в БД
 
