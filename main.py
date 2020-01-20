@@ -86,7 +86,10 @@ def handle_text(message):
         bot.send_message(message.chat.id, "В номере указаны неверные символы. Пожалуйста укажите правильный номер.")
         return
     r=get_info_lp(m)
-    bot.send_message(message.chat.id, r)
+    if len(r)<1:
+        bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?")
+    else:
+        bot.send_message(message.chat.id, r)
 
     pass
 
