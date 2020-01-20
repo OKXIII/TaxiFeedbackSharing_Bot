@@ -40,6 +40,11 @@ def check_licenseplate_chars(lp):
     return result
 
 #получение информации из базы по номеру
+def get_info_lp(lp):
+    result=''
+    db_worker = DB()
+    result=db_worker.get_info_lp(lp)
+    return result
 
 #запись данных в БД
 
@@ -80,7 +85,8 @@ def handle_text(message):
     if not check_licenseplate_chars(m):
         bot.send_message(message.chat.id, "В номере указаны неверные символы. Пожалуйста укажите правильный номер.")
         return
-    bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
+    r=get_info_lp(m)
+    bot.send_message(message.chat.id, r)
 
     pass
 
