@@ -25,10 +25,14 @@ def convert_licenseplate(lp):
     trans=u''.join([_trans_table.get(c,c) for c in lp.upper()])
     return trans
 
-#проверка номера на правильность
-def check_licenseplate(lp):
+#проверка номера на длину
+def check_licenseplate_len(lp):
     result=True
     if len(lp)>10 or len(lp)<9: result=False
+    return result
+
+# проверка номера на символы
+def check_licenseplate_len(lp):
     for i in lp:
         if i not in _permitted_chars:
             result=False
@@ -73,7 +77,6 @@ def handle_text(message):
         bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
     else:
         bot.send_message(message.chat.id, "¬ номере указаны неверные символы")
-
     pass
 
 
