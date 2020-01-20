@@ -23,18 +23,15 @@ bot = telebot.TeleBot(config.token)
 def convert_licenseplate(lp):
     lp=lp.replace(" ","")
     trans=u''.join([_trans_table.get(c,c) for c in lp.upper()])
-    res=''
-    for i in trans:
-        if i in _permitted_chars:
-            res+=i
-        else:
-            res+='O'
-    return res
+    return trans
 
 #проверка номера на правильность
 def check_licenseplate(lp):
     result=True
     if len(lp)>10 or len(lp)<9: result=False
+    for i in lp:
+        if i not in _permitted_chars:
+            result=False
     return result
 
 #получение информации из базы по номеру
@@ -71,7 +68,12 @@ def handle_statistics(message):
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
-    bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
+    m=convert_licenseplate(message.text).upper()
+    if check_licenseplate(m):
+        bot.send_message(message.chat.id, convert_licenseplate(message.text).upper())
+    else:
+        bot.send_message(message.chat.id, "¬ номере указаны неверные символы")
+
     pass
 
 
