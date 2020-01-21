@@ -93,6 +93,7 @@ def create_keyboard(type="common"):
         keyboard.add(button_yes, button_no)
     if type=="null":
         keyboard= types.ReplyKeyboardMarkup(row_width=0, resize_keyboard=True)
+        keyboard.keyboard.remove()
     return keyboard
 
 
