@@ -86,18 +86,21 @@ def handle_statistics(message):
 
 #Формирование клавиатуры
 def create_keyboard(type="common"):
-    keyboard= types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-    button_yes = types.KeyboardButton(text="Да")
-    button_no = types.KeyboardButton(text="Нет")
-    keyboard.add(button_yes, button_no)
+    if type=="common":
+        keyboard= types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+        button_yes = types.KeyboardButton(text="Да")
+        button_no = types.KeyboardButton(text="Нет")
+        keyboard.add(button_yes, button_no)
+    if type=="null":
+        keyboard= types.ReplyKeyboardMarkup(row_width=0, resize_keyboard=True)
     return keyboard
+
 
 #Добавление нового номера
 def add_new_lp(message):
     if config._REQUEST_TYPE == 1:
         config._REQUEST_TYPE=0
-        markup = telebot.types.ForceReply(selective=False)
-        bot.send_message(message.chat.id, "Добавляем новый номер", reply_markup=markup)
+        bot.send_message(message.chat.id, "Добавляем новый номер", reply_markup=create_keyboard("null"))
         pass
     if config._REQUEST_TYPE == 2:
         config._REQUEST_TYPE=0
