@@ -101,8 +101,7 @@ def add_new_lp(message):
         pass
     if config._REQUEST_TYPE == 2:
         config._REQUEST_TYPE=0
-        bot.send_message(message.chat.id, "Добавляем новый комментарий")
-        bot.send_message(message.chat.id, "Добавляем новый номер", reply_markup=None)
+        bot.send_message(message.chat.id, "Добавляем новый комментарий", reply_markup=None)
         pass
     return
 
