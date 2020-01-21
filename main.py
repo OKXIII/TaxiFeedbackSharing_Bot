@@ -62,7 +62,8 @@ def handle_start(message):
 
 
 def request_lp(message):
-    msg = bot.send_message(message.chat.id, "Укажите номер автомобиля")
+    config._REQUEST_TYPE=0
+    bot.send_message(message.chat.id, "Укажите номер автомобиля")
     pass
 
 # Статистика использования бота
