@@ -11,11 +11,17 @@ import re
 import time
 import traceback
 
-#_rus_chars = "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
 _rus_chars = "УКЕНХВАРОСМТ"
 _eng_chars = "YKEHXBAPOCMT"
 _permitted_chars="QWERTYUIOPASDFGHJKLZXCVBNM1234567890"
 _trans_table = dict(zip(_rus_chars, _eng_chars))
+
+#Тип запроса
+#0 - не определен
+#1 - запрос на создание нового номера
+#2 - запрос на добавление комментария
+_REQUEST_TYPE=0
+
 
 bot = telebot.TeleBot(config.token)
 
@@ -54,7 +60,13 @@ def get_info_lp(lp):
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     msg = bot.send_message(message.chat.id, "Здравствуйте! Я телебот для обмена отзывами о таксистах. Укажите номер автомобиля")
+    request_lp(message)
     # Запись в лог
+    pass
+
+
+def request_lp(message):
+    msg = bot.send_message(message.chat.id, "Укажите номер автомобиля")
     pass
 
 # Статистика использования бота
@@ -84,9 +96,26 @@ def create_keyboard(type="common"):
     keyboard.add(button_yes, button_no)
     return keyboard
 
+#Добавление нового номера
+def add_new_lp(message):
+    if _REQUEST_TYPE == 1:
+        bot.send_message(message.chat.id, "Добавляем новый номер")
+        pass
+    if _REQUEST_TYPE == 2:
+        bot.send_message(message.chat.id, "Добавляем новый комментарий")
+        pass
+    return
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
+    if message.text==("Да"):
+        add_new_lp(message)
+        return
+    if message.text==("Нет"):
+        request_lp(message)
+        return
+
+
     m=convert_licenseplate(message.text).upper()
     if not check_licenseplate_len(m):
         bot.send_message(message.chat.id, "Недопустимая длина номера автомобиля. Пожалуйста укажите правильный номер.")
@@ -96,11 +125,12 @@ def handle_text(message):
         return
     r=get_info_lp(m)
     if len(r)<1:
+        _REQUEST_TYPE=1
         bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?",reply_markup=create_keyboard())
     else:
         bot.send_message(message.chat.id, r)
+        _REQUEST_TYPE=2
         bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
-
     pass
 
 
