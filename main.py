@@ -87,7 +87,7 @@ def handle_statistics(message):
 #Формирование клавиатуры
 def create_keyboard(type="common"):
     if type=="common":
-        keyboard= types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
+        keyboard= types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True, one_time_keyboard=True)
         button_yes = types.KeyboardButton(text="Да")
         button_no = types.KeyboardButton(text="Нет")
         keyboard.add(button_yes, button_no)
@@ -104,8 +104,7 @@ def add_new_lp(message):
         pass
     if config._REQUEST_TYPE == 2:
         config._REQUEST_TYPE=0
-        markup = types.ReplyKeyboardRemove()
-        bot.send_message(message.chat.id, "Добавляем новый комментарий", reply_markup=markup)
+        bot.send_message(message.chat.id, "Добавляем новый комментарий")
         pass
     return
 
