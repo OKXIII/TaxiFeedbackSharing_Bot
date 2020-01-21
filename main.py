@@ -91,6 +91,9 @@ def create_keyboard(type="common"):
         button_yes = types.KeyboardButton(text="Да")
         button_no = types.KeyboardButton(text="Нет")
         keyboard.add(button_yes, button_no)
+    if type=="cancel":
+        keyboard= types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
+        button_yes = types.KeyboardButton(text="Отмена")
     if type=="null":
         keyboard= types.ReplyKeyboardRemove()
     return keyboard
@@ -100,11 +103,11 @@ def create_keyboard(type="common"):
 def add_new_lp(message):
     if config._REQUEST_TYPE == 1:
         config._REQUEST_TYPE=0
-        bot.send_message(message.chat.id, "Добавляем новый номер", reply_markup=create_keyboard("null"))
+        bot.send_message(message.chat.id, "Добавляем новый номер")
         pass
     if config._REQUEST_TYPE == 2:
         config._REQUEST_TYPE=0
-        bot.send_message(message.chat.id, "Добавляем новый комментарий")
+        bot.send_message(message.chat.id, "Введите ваш отзыв о такси с номером {0}".format(config.LICENSEPLATE),reply_markup=create_keyboard("cancel"))
         pass
     return
 
@@ -116,6 +119,10 @@ def handle_text(message):
     if message.text==("Нет"):
         request_lp(message)
         return
+    if message.text==("Отмена"):
+        config._REQUEST_TYPE=0
+        request_lp(message)
+        return
 
 
     m=convert_licenseplate(message.text).upper()
@@ -125,12 +132,13 @@ def handle_text(message):
     if not check_licenseplate_chars(m):
         bot.send_message(message.chat.id, "В номере указаны неверные символы. Пожалуйста укажите правильный номер.")
         return
+    config.LICENSEPLATE=m
     r=get_info_lp(m)
     if len(r)<1:
         config._REQUEST_TYPE=1
         bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?",reply_markup=create_keyboard())
     else:
-        #bot.send_message(message.chat.id, r)
+  #Выводим информацию по номеру
         config._REQUEST_TYPE=2
         bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
     pass
