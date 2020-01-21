@@ -92,8 +92,7 @@ def create_keyboard(type="common"):
         button_no = types.KeyboardButton(text="Нет")
         keyboard.add(button_yes, button_no)
     if type=="null":
-        keyboard= types.ReplyKeyboardMarkup(row_width=0, resize_keyboard=True)
-        keyboard.keyboard.remove()
+        keyboard= types.ReplyKeyboardRemove()
     return keyboard
 
 
@@ -105,7 +104,8 @@ def add_new_lp(message):
         pass
     if config._REQUEST_TYPE == 2:
         config._REQUEST_TYPE=0
-        bot.send_message(message.chat.id, "Добавляем новый комментарий", reply_markup=None)
+        markup = types.ReplyKeyboardRemove()
+        bot.send_message(message.chat.id, "Добавляем новый комментарий", reply_markup=markup)
         pass
     return
 
