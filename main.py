@@ -95,9 +95,12 @@ def create_keyboard(type="common"):
 #Добавление нового номера
 def add_new_lp(message):
     if config._REQUEST_TYPE == 1:
-        bot.send_message(message.chat.id, "Добавляем новый номер")
+        config._REQUEST_TYPE=0
+        markup = telebot.types.ForceReply(selective=False)
+        bot.send_message(message.chat.id, "Добавляем новый номер", reply_markup=markup)
         pass
     if config._REQUEST_TYPE == 2:
+        config._REQUEST_TYPE=0
         bot.send_message(message.chat.id, "Добавляем новый комментарий")
         pass
     return
