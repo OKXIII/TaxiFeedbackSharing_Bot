@@ -16,11 +16,7 @@ _eng_chars = "YKEHXBAPOCMT"
 _permitted_chars="QWERTYUIOPASDFGHJKLZXCVBNM1234567890"
 _trans_table = dict(zip(_rus_chars, _eng_chars))
 
-#Тип запроса
-#0 - не определен
-#1 - запрос на создание нового номера
-#2 - запрос на добавление комментария
-_REQUEST_TYPE=0
+
 
 
 bot = telebot.TeleBot(config.token)
@@ -98,10 +94,10 @@ def create_keyboard(type="common"):
 
 #Добавление нового номера
 def add_new_lp(message):
-    if _REQUEST_TYPE == 1:
+    if config._REQUEST_TYPE == 1:
         bot.send_message(message.chat.id, "Добавляем новый номер")
         pass
-    if _REQUEST_TYPE == 2:
+    if config._REQUEST_TYPE == 2:
         bot.send_message(message.chat.id, "Добавляем новый комментарий")
         pass
     return
@@ -125,11 +121,11 @@ def handle_text(message):
         return
     r=get_info_lp(m)
     if len(r)<1:
-        _REQUEST_TYPE=1
+        config._REQUEST_TYPE=1
         bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?",reply_markup=create_keyboard())
     else:
-        bot.send_message(message.chat.id, r)
-        _REQUEST_TYPE=2
+        #bot.send_message(message.chat.id, r)
+        config._REQUEST_TYPE=2
         bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
     pass
 

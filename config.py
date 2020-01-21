@@ -7,3 +7,8 @@ token= "1028605837:AAFtcyuoVRhyd17DT7WEWXlTH3Q5FCsc0YY"
 owner_chat_id=74869590
 mode="work"
 
+#Тип запроса
+#0 - не определен
+#1 - запрос на создание нового номера
+#2 - запрос на добавление комментария
+_REQUEST_TYPE=0
