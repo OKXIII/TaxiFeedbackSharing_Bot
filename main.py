@@ -174,7 +174,7 @@ def handle_text(message):
         if config._REQUEST_STEP==2:
             FDC['carmodel']=message.text
             config._REQUEST_STEP=3
-            bot.send_message(message.chat.id, "Ваш комментарий о работе")
+            bot.send_message(message.chat.id, "Ваш комментарий о работе", reply_markup=create_keyboard('null'))
             return
         if config._REQUEST_STEP==3:
             FDC['comment']=message.text
