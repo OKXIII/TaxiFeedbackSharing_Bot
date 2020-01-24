@@ -138,8 +138,8 @@ def handle_text(message):
         config._REQUEST_TYPE=0
         request_lp(message)
         return
-    if message.text==("Пропустить")  and (config._REQUEST_TYPE==2):
-        config._REQUEST_STEP+=1
+    # if message.text==("Пропустить")  and (config._REQUEST_TYPE==2):
+    #     config._REQUEST_STEP+=1
 
     if (config._REQUEST_TYPE==0):
         m=convert_licenseplate(message.text).upper()
