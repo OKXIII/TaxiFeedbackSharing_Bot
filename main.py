@@ -71,7 +71,8 @@ def handle_start(message):
 
 
 def request_lp(message):
-    config._REQUEST_TYPE=0
+    config._REQUEST_STEP = 0
+    config._REQUEST_TYPE = 0
     bot.send_message(message.chat.id, "Укажите номер автомобиля")
     pass
 
@@ -127,8 +128,11 @@ def add_new_lp(message):
 def handle_text(message):
     if message.text==("Да") and (config._REQUEST_TYPE==1 or config._REQUEST_TYPE==2):
         add_new_lp(message)
+        config._REQUEST_STEP = 1
+        config._REQUEST_TYPE = 2
         #return
     if message.text==("Нет")  and (config._REQUEST_TYPE==1 or config._REQUEST_TYPE==2):
+
         request_lp(message)
         return
     if message.text==("Отмена")  and (config._REQUEST_TYPE==2):
