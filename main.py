@@ -49,13 +49,15 @@ def get_info_lp(lp):
     return result
 
 #запись данных в БД
+def save_new_lp(lp, comment):
+    return
 
 
 
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    msg = bot.send_message(message.chat.id, "Здравствуйте! Я телебот для обмена отзывами о таксистах. Укажите номер автомобиля")
+    msg = bot.send_message(message.chat.id, "Здравствуйте! Я телебот для обмена отзывами о таксистах.")
     request_lp(message)
     # Запись в лог
     pass
@@ -96,6 +98,10 @@ def create_keyboard(type="common"):
         keyboard= types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
         button_cancel = types.KeyboardButton(text="Отмена")
         keyboard.add(button_cancel)
+    if type=="skip":
+        keyboard= types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True, one_time_keyboard=True)
+        button_skip = types.KeyboardButton(text="Пропустить")
+        keyboard.add(button_skip)
     if type=="null":
         keyboard= types.ReplyKeyboardRemove()
     return keyboard
@@ -108,6 +114,7 @@ def add_new_lp(message):
         bot.send_message(message.chat.id, "Добавляем новый номер")
         pass
     if config._REQUEST_TYPE == 2:
+        config._REQUEST_TYPE=3
         bot.send_message(message.chat.id, "Введите ваш отзыв о такси с номером {0}".format(config.LICENSEPLATE),reply_markup=create_keyboard("cancel"))
         pass
     return
@@ -124,8 +131,11 @@ def handle_text(message):
         config._REQUEST_TYPE=0
         request_lp(message)
         return
+    if message.text==("Пропустить")  and (config._REQUEST_TYPE==3):
+        config._REQUEST_STEP+=1
+        return
 
-    if  (config._REQUEST_TYPE==0):
+    if (config._REQUEST_TYPE==0):
         m=convert_licenseplate(message.text).upper()
         if not check_licenseplate_len(m):
             bot.send_message(message.chat.id, "Недопустимая длина номера автомобиля. Пожалуйста укажите правильный номер.")
@@ -134,14 +144,46 @@ def handle_text(message):
             bot.send_message(message.chat.id, "В номере указаны неверные символы. Пожалуйста укажите правильный номер.")
             return
         config.LICENSEPLATE=m
-        r=get_info_lp(m)
-        if len(r)<1:
+        result_list=get_info_lp(m)
+        if len(result_list)<1:
             config._REQUEST_TYPE=1
             bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?",reply_markup=create_keyboard())
         else:
-      #Выводим информацию по номеру
+            bot.send_message(message.chat.id, "Отзывы по номеру {0}".format(m))
+            for item in result_list:
+                bot.send_message(message.chat.id, "Дата: {0}".format(item[0]))
+                bot.send_message(message.chat.id, "Автомобиль: {0}".format(item[1]))
+                bot.send_message(message.chat.id, "Комментарий: {0}".format(item[2]))
+                bot.send_message(message.chat.id, "Водитель: {0}".format(item[3]))
+                bot.send_message(message.chat.id, "Оценка: {0}".format(item[4]))
+
+
+
+
+#TODO: Выводим информацию по номеру
             config._REQUEST_TYPE=2
             bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
+        return
+    if (config._REQUEST_TYPE==3):
+        if config._REQUEST_STEP==0:
+            bot.send_message(message.chat.id, "Марка и модель автомобиля", reply_markup=create_keyboard("skip"))
+            return
+        if config._REQUEST_STEP==1:
+            bot.send_message(message.chat.id, "Ваш комментарий о работе")
+            return
+        if config._REQUEST_STEP==2:
+            bot.send_message(message.chat.id, "Как зовут водителя", reply_markup=create_keyboard("skip"))
+            return
+        if config._REQUEST_STEP==3:
+            bot.send_message(message.chat.id, "Ваша оценка (1-5)", reply_markup=create_keyboard("skip"))
+            return
+
+
+#TODO: проверка сообщения на длину
+#TODO: проверка сообщения на корректность
+#TODO: запись отзыва
+        return
+
     pass
 
 

@@ -13,5 +13,5 @@ mode="work"
 #2 - запрос на добавление комментария
 #3 - запрос
 _REQUEST_TYPE=0
-
+_REQUEST_STEP=0
 LICENSEPLATE=''
