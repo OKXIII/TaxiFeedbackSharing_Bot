@@ -49,7 +49,8 @@ class DB:
             licenseplate=self.cursor.fetchall()
             if len(licenseplate)==0:
                 self.cursor.execute("INSERT INTO licenseplate (licenseplate,time) VALUES ('{0}','{1}'".format(lp,datetime.datetime.now()))
-            self.cursor.execute("INSERT INTO comment (grade, comment,driver,carmodel,license_plate_id, user_id, time) VALUES ({0},'{1}','{2}','{3}',{4},'{5}','{6}')".format(grade,comment,driver,carmodel,licenseplate[0][0],user_id,datetime.datetime.now()))
+            self.cursor.execute("INSERT INTO comment (grade, comment,driver,carmodel,license_plate_id, user_id, time) \
+            VALUES ({0},'{1}','{2}','{3}',{4},'{5}','{6}')".format(grade,comment,driver,carmodel,licenseplate[0][0],user_id,datetime.datetime.now()))
 
 
 

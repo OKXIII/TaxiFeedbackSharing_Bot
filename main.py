@@ -64,6 +64,7 @@ def save_new_lp(lp, comment):
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     msg = bot.send_message(message.chat.id, "Здравствуйте! Я телебот для обмена отзывами о таксистах.")
+    # TODO: Добавить статистику о количестве пользователей сервиса и количестве отзывов
     request_lp(message)
     # Запись в лог
     pass
@@ -117,6 +118,7 @@ def create_keyboard(type="common"):
 def add_new_lp(message):
     if config._REQUEST_TYPE == 1:
         config._REQUEST_TYPE=2
+        config._REQUEST_STEP = 1
         bot.send_message(message.chat.id, "Введите ваш отзыв о такси с номером {0}".format(config.LICENSEPLATE),reply_markup=create_keyboard("cancel"))
         pass
     return
@@ -125,7 +127,7 @@ def add_new_lp(message):
 def handle_text(message):
     if message.text==("Да") and (config._REQUEST_TYPE==1 or config._REQUEST_TYPE==2):
         add_new_lp(message)
-        return
+        #return
     if message.text==("Нет")  and (config._REQUEST_TYPE==1 or config._REQUEST_TYPE==2):
         request_lp(message)
         return
@@ -148,7 +150,7 @@ def handle_text(message):
         config.LICENSEPLATE=m
         result_list=get_info_lp(m)
         if len(result_list)<1:
-            config._REQUEST_TYPE=1
+            config._REQUEST_TYPE=2
             bot.send_message(message.chat.id, "Информации по данному номеру нет. Хотите добавить?",reply_markup=create_keyboard())
         else:
             bot.send_message(message.chat.id, "Отзывы по номеру {0}".format(m))
@@ -163,30 +165,32 @@ def handle_text(message):
             bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
 
     if (config._REQUEST_TYPE==2):
-        if config._REQUEST_STEP==0:
-            config._REQUEST_STEP=1
+        if config._REQUEST_STEP==1:
+            config._REQUEST_STEP=2
             bot.send_message(message.chat.id, "Марка и модель автомобиля", reply_markup=create_keyboard("skip"))
             return
-        if config._REQUEST_STEP==1:
+        if config._REQUEST_STEP==2:
             FDC['carmodel']=message.text
-            config._REQUEST_STEP=2
+            config._REQUEST_STEP=3
             bot.send_message(message.chat.id, "Ваш комментарий о работе")
             return
-        if config._REQUEST_STEP==2:
+        if config._REQUEST_STEP==3:
             FDC['comment']=message.text
-            config._REQUEST_STEP=3
+            config._REQUEST_STEP=4
             bot.send_message(message.chat.id, "Как зовут водителя", reply_markup=create_keyboard("skip"))
             return
-        if config._REQUEST_STEP==3:
+        if config._REQUEST_STEP==4:
             FDC['driver']=message.text
-            config._REQUEST_STEP=4
+            config._REQUEST_STEP=5
             bot.send_message(message.chat.id, "Ваша оценка (1-5)", reply_markup=create_keyboard("skip"))
             return
-        if config._REQUEST_STEP==4:
+        if config._REQUEST_STEP==5:
             FDC['grade']=message.text
             db_worker = DB()
             db_worker.save_comment(message.chat.id,config.LICENSEPLATE,FDC['carmodel'],FDC['comment'],FDC['driver'],FDC['grade'])
             db_worker.close()
+            config._REQUEST_STEP = 0
+            config._REQUEST_TYPE =0
             return
 
 #TODO: проверка сообщения на длину
@@ -195,7 +199,6 @@ def handle_text(message):
         return
 
     pass
-
 
 
 
