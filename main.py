@@ -155,7 +155,6 @@ def handle_text(message):
                 bot.send_message(message.chat.id, text)
             config._REQUEST_TYPE=2
             bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
-        return
 
     if (config._REQUEST_TYPE==2):
         if config._REQUEST_STEP==0:
