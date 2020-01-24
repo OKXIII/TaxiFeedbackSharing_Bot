@@ -110,11 +110,7 @@ def create_keyboard(type="common"):
 #Добавление нового номера
 def add_new_lp(message):
     if config._REQUEST_TYPE == 1:
-        config._REQUEST_TYPE=0
-        bot.send_message(message.chat.id, "Добавляем новый номер")
-        pass
-    if config._REQUEST_TYPE == 2:
-        config._REQUEST_TYPE=3
+        config._REQUEST_TYPE=2
         bot.send_message(message.chat.id, "Введите ваш отзыв о такси с номером {0}".format(config.LICENSEPLATE),reply_markup=create_keyboard("cancel"))
         pass
     return
