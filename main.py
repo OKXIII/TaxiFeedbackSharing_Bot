@@ -185,7 +185,7 @@ def handle_text(message):
         if config._REQUEST_STEP==4:
             FDC['grade']=message.text
             db_worker = DB()
-            db_worker.save_comment(m,FDC['carmodel'],FDC['comment'],FDC['driver'],FDC['grade'])
+            db_worker.save_comment(config.LICENSEPLATE,FDC['carmodel'],FDC['comment'],FDC['driver'],FDC['grade'])
             db_worker.close()
             return
 
