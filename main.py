@@ -151,20 +151,17 @@ def handle_text(message):
         else:
             bot.send_message(message.chat.id, "Отзывы по номеру {0}".format(m))
             for item in result_list:
-                bot.send_message(message.chat.id, "Дата: {0}".format(item[0]))
-                bot.send_message(message.chat.id, "Автомобиль: {0}".format(item[1]))
-                bot.send_message(message.chat.id, "Комментарий: {0}".format(item[2]))
-                bot.send_message(message.chat.id, "Водитель: {0}".format(item[3]))
-                bot.send_message(message.chat.id, "Оценка: {0}".format(item[4]))
-
-
-
-
-#TODO: Выводим информацию по номеру
+                text = "Дата: {0}".format(item[0])
+                if item[1]!=None: text+="\nАвтомобиль: {0}".format(item[1])
+                if item[2] != None: text+="\nКомментарий: {0}".format(item[2])
+                if item[3] != None: text+="\nВодитель: {0}".format(item[3])
+                if item[4] != None: text+="\nОценка: {0}".format(item[4])
+                bot.send_message(message.chat.id, text)
             config._REQUEST_TYPE=2
             bot.send_message(message.chat.id, "Хотите добавить свой отзыв?",reply_markup=create_keyboard())
         return
-    if (config._REQUEST_TYPE==3):
+
+    if (config._REQUEST_TYPE==2):
         if config._REQUEST_STEP==0:
             bot.send_message(message.chat.id, "Марка и модель автомобиля", reply_markup=create_keyboard("skip"))
             return
