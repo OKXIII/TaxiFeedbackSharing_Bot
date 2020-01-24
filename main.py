@@ -16,7 +16,13 @@ _eng_chars = "YKEHXBAPOCMT"
 _permitted_chars="QWERTYUIOPASDFGHJKLZXCVBNM1234567890"
 _trans_table = dict(zip(_rus_chars, _eng_chars))
 
-
+FDC={
+    'licenseplate':'',
+    'carmodel':'',
+    'driver':'',
+    'comment':'',
+    'grade': 0
+}
 
 
 bot = telebot.TeleBot(config.token)
@@ -127,7 +133,7 @@ def handle_text(message):
         config._REQUEST_TYPE=0
         request_lp(message)
         return
-    if message.text==("Пропустить")  and (config._REQUEST_TYPE==3):
+    if message.text==("Пропустить")  and (config._REQUEST_TYPE==2):
         config._REQUEST_STEP+=1
         return
 
@@ -158,18 +164,30 @@ def handle_text(message):
 
     if (config._REQUEST_TYPE==2):
         if config._REQUEST_STEP==0:
+            config._REQUEST_STEP=1
             bot.send_message(message.chat.id, "Марка и модель автомобиля", reply_markup=create_keyboard("skip"))
             return
         if config._REQUEST_STEP==1:
+            FDC['carmodel']=message.text
+            config._REQUEST_STEP=2
             bot.send_message(message.chat.id, "Ваш комментарий о работе")
             return
         if config._REQUEST_STEP==2:
+            FDC['comment']=message.text
+            config._REQUEST_STEP=3
             bot.send_message(message.chat.id, "Как зовут водителя", reply_markup=create_keyboard("skip"))
             return
         if config._REQUEST_STEP==3:
+            FDC['driver']=message.text
+            config._REQUEST_STEP=4
             bot.send_message(message.chat.id, "Ваша оценка (1-5)", reply_markup=create_keyboard("skip"))
             return
-
+        if config._REQUEST_STEP==4:
+            FDC['grade']=message.text
+            db_worker = DB()
+            db_worker.save_comment(m,FDC['carmodel'],FDC['comment'],FDC['driver'],FDC['grade'])
+            db_worker.close()
+            return
 
 #TODO: проверка сообщения на длину
 #TODO: проверка сообщения на корректность
