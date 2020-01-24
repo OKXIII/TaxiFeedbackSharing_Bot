@@ -38,7 +38,7 @@ class DB:
 #Получение информации из БД
     def get_info_lp(self, src):
         with self.connection:
-            self.cursor.execute("SELECT * FROM licenseplate WHERE licenseplate='{}'".format(src))
+            self.cursor.execute("SELECT licenseplate.licenseplate, comment.carmodel, comment.comment, comment.driver, comment.grade FROM licenseplate JOIN comment ON licenseplate.id=comment.license_plate WHERE licenseplate='{}'".format(src))
             result = self.cursor.fetchall()
         return result
 
