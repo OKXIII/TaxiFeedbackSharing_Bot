@@ -36,7 +36,7 @@ def convert_licenseplate(lp):
 #проверка номера на длину
 def check_licenseplate_len(lp):
     result=True
-    if len(lp)>10 or len(lp)<9: result=False
+    if len(lp)>10 or len(lp)<7: result=False
     return result
 
 # проверка номера на символы
@@ -138,8 +138,10 @@ def handle_text(message):
         config._REQUEST_TYPE=0
         request_lp(message)
         return
-    # if message.text==("Пропустить")  and (config._REQUEST_TYPE==2):
-    #     config._REQUEST_STEP+=1
+    if message.text==("Пропустить")  and (config._REQUEST_TYPE==2):
+        config._REQUEST_STEP+=1
+
+        return
 
     if (config._REQUEST_TYPE==0):
         m=convert_licenseplate(message.text).upper()
@@ -193,11 +195,10 @@ def handle_text(message):
             db_worker.close()
             config._REQUEST_STEP = 0
             config._REQUEST_TYPE =0
+            bot.send_message(message.chat.id, "Спасибо за Ваш отзыв", reply_markup=create_keyboard("null"))
             return
-
 #TODO: проверка сообщения на длину
 #TODO: проверка сообщения на корректность
-#TODO: запись отзыва
         return
 
     pass
