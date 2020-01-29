@@ -148,7 +148,7 @@ def handle_text(message):
         request_lp(message)
         return
     if mess==("Пропустить")  and (config._REQUEST_TYPE==2):
-        config._REQUEST_STEP=config._REQUEST_STEP+1
+        #config._REQUEST_STEP=config._REQUEST_STEP+1
         mess="-"
         #return
 
