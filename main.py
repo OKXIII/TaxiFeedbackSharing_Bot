@@ -150,7 +150,7 @@ def handle_text(message):
     if mess==("Пропустить")  and (config._REQUEST_TYPE==2):
         config._REQUEST_STEP=config._REQUEST_STEP+1
         mess="-"
-        return
+        #return
 
     if (config._REQUEST_TYPE==0):
         m=convert_licenseplate(message.text).upper()
