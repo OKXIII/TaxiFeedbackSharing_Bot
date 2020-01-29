@@ -159,7 +159,7 @@ def handle_text(message):
         else:
             bot.send_message(message.chat.id, "Отзывы по номеру {0}".format(m))
             for item in result_list:
-                text = "Дата: {0}".format(item[0])
+                text = "Дата: {0}.{1}.{2}".format(item[0].day, item[0].month, item[0].year)
                 if item[1]!=None: text+="\nАвтомобиль: {0}".format(item[1])
                 if item[2] != None: text+="\nКомментарий: {0}".format(item[2])
                 if item[3] != None: text+="\nВодитель: {0}".format(item[3])
