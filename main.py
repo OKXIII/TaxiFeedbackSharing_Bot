@@ -196,6 +196,7 @@ def handle_text(message):
             config._REQUEST_STEP = 0
             config._REQUEST_TYPE =0
             bot.send_message(message.chat.id, "Спасибо за Ваш отзыв", reply_markup=create_keyboard("null"))
+            request_lp(message)
             return
 #TODO: проверка сообщения на длину
 #TODO: проверка сообщения на корректность
