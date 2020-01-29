@@ -47,6 +47,13 @@ def check_licenseplate_chars(lp):
             result=False
     return result
 
+#Конвертация в число
+def num(s):
+    try:
+        return int(s)
+    except ValueError:
+        return 0
+
 #получение информации из базы по номеру
 def get_info_lp(lp):
     result=''
@@ -190,7 +197,7 @@ def handle_text(message):
             bot.send_message(message.chat.id, "Ваша оценка (1-5)", reply_markup=create_keyboard("skip"))
             return
         if config._REQUEST_STEP==5:
-            FDC['grade']=message.text
+            FDC['grade']=num(message.text)
             db_worker = DB()
             db_worker.save_comment(message.chat.id,config.LICENSEPLATE,FDC['carmodel'],FDC['comment'],FDC['driver'],FDC['grade'])
             db_worker.close()
