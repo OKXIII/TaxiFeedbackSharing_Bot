@@ -38,7 +38,7 @@ class DB:
 #Получение информации из БД
     def get_info_lp(self, src):
         with self.connection:
-            self.cursor.execute("SELECT licenseplate.time, comment.carmodel, comment.comment, comment.driver, comment.grade FROM licenseplate JOIN comment ON licenseplate.id=comment.license_plate_id WHERE licenseplate.licenseplate='{}'".format(src))
+            self.cursor.execute("SELECT comment.time, comment.carmodel, comment.comment, comment.driver, comment.grade FROM licenseplate JOIN comment ON licenseplate.id=comment.license_plate_id WHERE licenseplate.licenseplate='{}'".format(src))
             result = self.cursor.fetchall()
         return result
 
@@ -59,7 +59,7 @@ class DB:
 #Получение статистики
     def get_count_licenseplate(self):
         with self.connection:
-            self.cursor.execute("SELECT COUNT(id) FROM licenseplate")
+            self.cursor.execute("SELECT COUNT(DISTINCT licenseplate) FROM licenseplate")
             return self.cursor.fetchall()[0][0]
 
     def get_count_comment(self):
@@ -74,7 +74,7 @@ class DB:
 
     def get_count_activeuser(self):
         with self.connection:
-            self.cursor.execute("SELECT COUNT(user_id) FROM comment")
+            self.cursor.execute("SELECT COUNT(DISTINCT user_id) FROM comment")
             return self.cursor.fetchall()[0][0]
 
     def close(self):
