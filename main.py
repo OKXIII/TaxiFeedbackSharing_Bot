@@ -92,6 +92,7 @@ def handle_statistics(message):
              .format(count_activeusers,count_licenseplates,count_comments,count_photos)
         bot.send_message(message.chat.id, text)
         db_worker.close()
+        request_lp(message)
     pass
 
 
@@ -139,9 +140,9 @@ def handle_text(message):
         request_lp(message)
         return
     if message.text==("Пропустить")  and (config._REQUEST_TYPE==2):
-        config._REQUEST_STEP+=1
+        config._REQUEST_STEP=config._REQUEST_STEP+1
 
-        return
+       # return
 
     if (config._REQUEST_TYPE==0):
         m=convert_licenseplate(message.text).upper()
