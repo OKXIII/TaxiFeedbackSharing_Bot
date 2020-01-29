@@ -134,6 +134,7 @@ def add_new_lp(message):
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
+    mess=message.text
     if message.text==("Да") and (config._REQUEST_TYPE==1 or config._REQUEST_TYPE==2):
         add_new_lp(message)
         config._REQUEST_STEP = 1
@@ -146,10 +147,10 @@ def handle_text(message):
         config._REQUEST_TYPE=0
         request_lp(message)
         return
-    if message.text==("Пропустить")  and (config._REQUEST_TYPE==2):
+    if mess==("Пропустить")  and (config._REQUEST_TYPE==2):
         config._REQUEST_STEP=config._REQUEST_STEP+1
-
-       # return
+        mess="-"
+        return
 
     if (config._REQUEST_TYPE==0):
         m=convert_licenseplate(message.text).upper()
@@ -182,22 +183,22 @@ def handle_text(message):
             bot.send_message(message.chat.id, "Марка и модель автомобиля", reply_markup=create_keyboard("skip"))
             return
         if config._REQUEST_STEP==2:
-            FDC['carmodel']=message.text
+            FDC['carmodel']=mess
             config._REQUEST_STEP=3
             bot.send_message(message.chat.id, "Ваш комментарий о работе", reply_markup=create_keyboard('null'))
             return
         if config._REQUEST_STEP==3:
-            FDC['comment']=message.text
+            FDC['comment']=mess
             config._REQUEST_STEP=4
             bot.send_message(message.chat.id, "Как зовут водителя", reply_markup=create_keyboard("skip"))
             return
         if config._REQUEST_STEP==4:
-            FDC['driver']=message.text
+            FDC['driver']=mess
             config._REQUEST_STEP=5
             bot.send_message(message.chat.id, "Ваша оценка (1-5)", reply_markup=create_keyboard("skip"))
             return
         if config._REQUEST_STEP==5:
-            FDC['grade']=num(message.text)
+            FDC['grade']=num(mess)
             db_worker = DB()
             db_worker.save_comment(message.chat.id,config.LICENSEPLATE,FDC['carmodel'],FDC['comment'],FDC['driver'],FDC['grade'])
             db_worker.close()
